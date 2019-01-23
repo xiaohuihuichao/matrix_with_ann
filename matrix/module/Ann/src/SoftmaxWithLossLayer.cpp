@@ -39,8 +39,12 @@ namespace mario
 		matrix sum = m_out.sumByRow();
 		for (int i = 0; i < m_out.rows(); ++i)
 		{
-			const double * const pSum = sum.getRowPoint(i);
-			m_out /= pSum[0];
+			const double const sumI = sum.getRowPoint(i)[0];
+			double *pData = m_out.getRowPoint(i);
+                        for (int j = 0; j < m_out.cols(); ++j)
+                        {
+                             pData[j] /= sumI;
+                        }
 		}
 
 		return m_out;
