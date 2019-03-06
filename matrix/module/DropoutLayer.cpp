@@ -17,8 +17,7 @@ namespace mario
 	{
 		if (_lastOut.cols() != m_in.cols())
 		{
-			cerr << "Error in DropoutLayer::forward(): _lastOut.cols() != m_in.cols().\n";
-			return matrix();
+			throw "Error in DropoutLayer::forward(): _lastOut.cols() != m_in.cols().";
 		}
 
 		m_in.release();
@@ -62,8 +61,7 @@ namespace mario
 	{
 		if (m_dx.cols() != _nextDerr.cols())
 		{
-			cerr << "Error in DropoutLayer::backward(): m_dx.cols() != _nextDerr.cols().\n";
-			return Matrix();
+			throw "Error in DropoutLayer::backward(): m_dx.cols() != _nextDerr.cols().\n";
 		}
 
 		m_dx.release();
