@@ -23,8 +23,7 @@ namespace mario
 	{
 		if (m_in.cols() != _lastOut.cols())
 		{
-			cerr << "Error in SigmoidLayer::forward(): m_in.cols() != _lastOut.cols().\n";
-			return Matrix();
+			throw "Error in SigmoidLayer::forward(): m_in.cols() != _lastOut.cols().";
 		}
 
 		m_in.release();
@@ -40,8 +39,7 @@ namespace mario
 	{
 		if (m_in.rows() != _nextDerr.rows())
 		{
-			cerr << "Error in MeanSquareErrorLayer::backward(): m_in.rows() != _nextDx.rows().\n";
-			return matrix();
+			throw "Error in MeanSquareErrorLayer::backward(): m_in.rows() != _nextDx.rows().";
 		}
 
 		m_dx.release();
