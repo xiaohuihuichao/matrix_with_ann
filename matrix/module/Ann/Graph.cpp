@@ -46,8 +46,7 @@ namespace mario
 	{
 		if (_x.rows() != _y.rows())
 		{
-			cerr << "Error in Graph::loadData(): _x.rows() != _y.rows().\n";
-			return;
+			throw "Error in Graph::loadData(): _x.rows() != _y.rows().";
 		}
 
 		m_trainX.release();
@@ -61,8 +60,7 @@ namespace mario
 	{
 		if (_startIndex + _num > m_trainX.rows())
 		{
-			cerr << "Error in Graph::feedXY(): _startIndex + _num > m_X.rows().\n";
-			return;
+			throw "Error in Graph::feedXY(): _startIndex + _num > m_X.rows().";
 		}
 
 		m_batchX.release();
@@ -87,8 +85,7 @@ namespace mario
 	{
 		if (_x.rows() != _y.rows())
 		{
-			cerr << "Error in Graph::loadData(): _x.rows() != _y.rows().\n";
-			return;
+			throw "Error in Graph::loadData(): _x.rows() != _y.rows().";
 		}
 
 		m_testX.release();
@@ -187,8 +184,7 @@ namespace mario
 	{
 		if (0 == m_nodes.size())
 		{
-			cerr << "Error in Graph::forward(): 0 == m_nodes.size().\n";
-			return;
+			throw "Error in Graph::forward(): 0 == m_nodes.size().";
 		}
 
 		Operator *node = m_nodes[0];
@@ -210,8 +206,7 @@ namespace mario
 	{
 		if (0 == m_nodes.size())
 		{
-			cerr << "Error in Graph::backward(): 0 == m_nodes.size().\n";
-			return;
+			throw "Error in Graph::backward(): 0 == m_nodes.size().";
 		}
 
 		Operator *node = m_nodes.back();
