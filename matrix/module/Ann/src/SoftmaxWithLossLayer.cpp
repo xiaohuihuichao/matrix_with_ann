@@ -26,8 +26,7 @@ namespace mario
 	{
 		if (m_in.cols() != _lastOut.cols())
 		{
-			cout << "Error in MeanSquareErrorLayer::forward(): m_in.cols() != _lastOut.cols().\n";
-			return matrix();
+			throw "Error in MeanSquareErrorLayer::forward(): m_in.cols() != _lastOut.cols().";
 		}
 
 		m_in.release();
@@ -54,13 +53,11 @@ namespace mario
 	{
 		if (m_out.rows() != _y.rows() || m_out.cols() != _y.cols())
 		{
-			cout << "Error in SoftmaxWithLossLayer::calLoss(): m_in.rows() != m_y.rows() || m_in.cols() != m_y.cols().\n";
-			return Matrix();
+			throw "Error in SoftmaxWithLossLayer::calLoss(): m_in.rows() != m_y.rows() || m_in.cols() != m_y.cols().";
 		}
 		if (m_in.rows() != _y.rows())
 		{
-			cerr << "Error in SoftmaxWithLossLayer::backward(): m_in.rows() != _nextDx.rows().\n";
-			return matrix();
+			throw "Error in SoftmaxWithLossLayer::backward(): m_in.rows() != _nextDx.rows().";
 		}
 
 		m_dx.release();
@@ -82,8 +79,7 @@ namespace mario
 	{
 		if (m_out.cols() != m_y.cols())
 		{
-			cout << "Error in MeanSquareErrorLayer::setLabel(): m_out.cols() != m_y.cols().\n";
-			return;
+			throw "Error in MeanSquareErrorLayer::setLabel(): m_out.cols() != m_y.cols().";
 		}
 
 		m_y.release();
