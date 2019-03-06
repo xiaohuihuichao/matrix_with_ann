@@ -151,8 +151,7 @@ namespace mario
 	{
 		if (!isSquareMatrix())
 		{
-			cerr << "Error in getDet(): the matrix is not square.\n";
-			return 0;
+			throw "Error in getDet(): the matrix is not square.";
 		}
 
 		Matrix copyMatrix(*this);
