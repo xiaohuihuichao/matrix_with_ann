@@ -44,8 +44,7 @@ namespace mario
 	{
 		if (m_in.cols() != _lastOut.cols())
 		{
-			cout << "Error in ullConnectionLayer::forward(): m_in.cols() != _lastOut.cols().\n";
-			return matrix();
+			throw "Error in ullConnectionLayer::forward(): m_in.cols() != _lastOut.cols().";
 		}
 
 		m_in.release();
@@ -61,8 +60,7 @@ namespace mario
 	{
 		if (m_in.rows() != _nextDerr.rows())
 		{
-			cerr << "Error in FullConnectionLayer::backward(): m_in.rows() != _nextDx.rows().\n";
-			return matrix();
+			throw "Error in FullConnectionLayer::backward(): m_in.rows() != _nextDx.rows().";
 		}
 
 		m_dw.release();
