@@ -21,7 +21,7 @@ namespace mario
 	{
 		if (_row <= 0 || _col <= 0)
 		{
-			cerr << "Error in Matrix(): the row and col of matrix must > 0.\n";
+			throw "Error in Matrix(int&, int&, const double&): the row and col of matrix must > 0.";
 			return;
 		}
 
@@ -79,8 +79,8 @@ namespace mario
 	{
 		if (_r < 0 || _r >= m_row)
 		{
-			cout << _r << "\t" << m_row << endl;
-			cerr << "Error in getRowPoint(): the row is wrong.\n";
+			//cout << _r << "\t" << m_row << endl;
+			throw "Error in getRowPoint(const int&) const: the index of row is wrong.";
 			return NULL;
 		}
 
@@ -93,7 +93,7 @@ namespace mario
 		if (_row<0 || _col<0
 			|| _row>m_row - 1 || _col>m_col - 1)
 		{
-			cerr << "Error in Matrix::get(): the index is wrong.\n";
+			throw "Error in Matrix::get(const int&, const int&) const: the index is wrong.";
 			return 0;
 		}
 		
@@ -107,7 +107,7 @@ namespace mario
 		if (_row<0 || _col<0
 			|| _row>m_row || _col>m_col)
 		{
-			cerr << "Error in Matrix::set(): the index is wrong.\n";
+			throw "Error in Matrix::set(const int&, const int&, const double&): the index is wrong.";
 			return false;
 		}
 
@@ -124,7 +124,7 @@ namespace mario
 			|| _i >= m_row 
 			|| _j >= m_row)
 		{
-			cerr << "Error in swapRow(i, j): i<0 || j<0 || i>=row || j>=row.\n";
+			throw "Error in swapRow(const int&, const int&): i<0 || j<0 || i>=row || j>=row.";
 			return false;
 		}
 
@@ -156,7 +156,7 @@ namespace mario
 		}
 
 		Matrix copyMatrix(*this);
-		//¼ÇÂ¼³õµÈĞĞ±ä»»µÄ´ÎÊı
+		//è®°å½•åˆç­‰è¡Œå˜æ¢çš„æ¬¡æ•°
 		int iter = 0;
 
 		double det = 1;
@@ -207,25 +207,25 @@ namespace mario
 	{
 		if (!isSquareMatrix())
 		{
-			cerr << "Error in inv_LU(): this is not a square matrix.(row, col)=(" << m_row << ", " << m_col << ")\n";
+			throw "Error in inv_LU(): The matrix is not square.";
 			return Matrix();
 		}
 
 		double det = getDet();
 		if (det >= -EPSINON && det <= EPSINON)
 		{
-			cerr << "Error in inv_LU(): the determinant is equal to 0.\n";
+			throw "Error in inv_LU(): the determinant is equal to 0.";
 			return Matrix();
 		}
 
 		int n = m_row;
-		//½¨Á¢l¡¢l_inverse¡¢u¡¢u_inverse¾ØÕó
+		//å»ºç«‹lã€l_inverseã€uã€u_inverseçŸ©é˜µ
 		Matrix l(n, n);
 		Matrix l_inverse(n, n);
 		Matrix u(n, n);
 		Matrix u_inverse(n, n);
 
-		//¼ÆËã¾ØÕó¶Ô½ÇÏß
+		//è®¡ç®—çŸ©é˜µå¯¹è§’çº¿
 		for (int i = 0; i < n; ++i)
 		{
 			l.set(i, i, 1);
@@ -239,7 +239,7 @@ namespace mario
 				double s = 0;
 				for (int k = 0; k < i; ++k)
 				{
-					s += l(i, k) * u(k, j);	//°´ĞĞ¼ÆËãuÖµ
+					s += l(i, k) * u(k, j);	//æŒ‰è¡Œè®¡ç®—uå€¼
 				}
 				u.set(i, j, get(i, j) - s);
 			}
@@ -251,7 +251,7 @@ namespace mario
 				{
 					s += l(j, k) * u(k, i);
 				}
-				l.set(j, i, (get(j, i) - s) / u(i, i));	//°´ÁĞ¼ÆËãlÖµ
+				l.set(j, i, (get(j, i) - s) / u(i, i));	//æŒ‰åˆ—è®¡ç®—lå€¼
 			}
 		}
 
@@ -293,7 +293,7 @@ namespace mario
 			{
 				if (_isnan(result.get(i, j)))
 				{
-					cerr << "Error in inv_LU(): the result is 1.#INF or -1.#IND or 1.#INF000 or -1.#INF000.\n";
+					throw "Error in inv_LU(): the result is 1.#INF or -1.#IND or 1.#INF000 or -1.#INF000.";
 				}
 			}
 		}
@@ -324,13 +324,11 @@ namespace mario
 	{
 		if (m_row != _m.m_row || m_col != _m.m_col)
 		{
-			cerr << "Error in mul(): the size of matrix is not equal.\n";
-			return Matrix();
+			throw "Error in mul(): the size of matrix is not equal.";
 		}
 		else if (NULL == m_data)
 		{
-			cerr << "Error in mul(): the data point to NULL.\n";
-			return Matrix();
+			throw "Error in mul(): the data point to NULL.";
 		}
 
 		Matrix result(m_row, m_col);
@@ -351,8 +349,7 @@ namespace mario
 	{
 		if (m_row != _m.m_row || m_col != _m.m_col)
 		{
-			cout << "Error in Matrix::dot(m): m_row != _m.m_row || m_col != _m.m_col.\n";
-			return -1;
+			throw "Error in Matrix::dot(m): m_row != _m.m_row || m_col != _m.m_col.";
 		}
 
 		matrix result = mul(_m).sumByCol().sumByRow();
@@ -384,8 +381,7 @@ namespace mario
 		}
 		if (m_row != _m.m_row || m_col != _m.m_col)
 		{
-			cerr << "Error in operator=(): size fo matrix is not equal.\n";
-			return *this;
+			throw "Error in operator=(): size of matrix is not equal.";
 		}
 		
 		double *pDst = m_data;
@@ -400,8 +396,7 @@ namespace mario
 	{
 		if (_i<0 || _i>m_row - 1)
 		{
-			cerr << "Error in row(): the index is out of boundary.\n";
-			return Matrix();
+			throw "Error in row(): the index is out of boundary.";
 		}
 
 		Matrix result(1, m_col);
@@ -418,8 +413,7 @@ namespace mario
 	{
 		if (_i<0 || _i>m_col - 1)
 		{
-			cerr << "Error in row(): the index is out of boundary.\n";
-			return Matrix();
+			throw "Error in row(): the index is out of boundary.";
 		}
 
 		Matrix result(m_row, 1);
@@ -439,13 +433,11 @@ namespace mario
 	{
 		if (_row < 0 || _col < 0 || _height <= 0 || _width <= 0)
 		{
-			cerr << "Error in block(): _row < 0 || _col < 0 || _height <= 0 || _width <= 0.\n";
-			return Matrix();
+			throw "Error in block(): _row < 0 || _col < 0 || _height <= 0 || _width <= 0.";
 		}
 		if (_row + _height>m_row || _col + _width>m_col)
 		{
-			cerr << "Error in block(): _row + _height>m_row || _col + _width>m_col.\n";
-			return Matrix();
+			throw "Error in block(): _row + _height>m_row || _col + _width>m_col.";
 		}
 
 		Matrix result(_height, _width);
@@ -468,8 +460,7 @@ namespace mario
 	{
 		if (NULL == m_data)
 		{
-			cerr << "Error in sumByRow(): the data is NULL.\n";
-			return Matrix();
+			throw "Error in sumByRow(): the data is NULL.";
 		}
 
 		Matrix result(m_row, 1, 0);
@@ -492,8 +483,7 @@ namespace mario
 	{
 		if (NULL == m_data)
 		{
-			cerr << "Error in sumByRow(): the data is NULL.\n";
-			return Matrix();
+			throw "Error in sumByRow(): the data is NULL.";
 		}
 
 		Matrix result(1, m_col, 0);
@@ -528,8 +518,7 @@ namespace mario
 	{
 		if (NULL == m_data)
 		{
-			cerr << "Error in sqrt(): data is NULL.\n";
-			return Matrix();
+			throw "Error in sqrt(): data is NULL.";
 		}
 
 		Matrix result(m_row, m_col);
@@ -542,8 +531,7 @@ namespace mario
 			{
 				if (pM[c] <= 0)
 				{
-					cout << "Error in Matrix::log(): pM[c] <= 0.\n";
-					return Matrix();
+					throw "Error in Matrix::log(): pM[c] <= 0.";
 				}
 				pR[c] = std::log(pM[c]);
 			}
@@ -557,8 +545,7 @@ namespace mario
 	{
 		if (NULL == m_data)
 		{
-			cerr << "Error in sqrt(): data is NULL.\n";
-			return Matrix();
+			throw "Error in sqrt(): data is NULL.";
 		}
 
 		Matrix result(m_row, m_col);
@@ -571,8 +558,7 @@ namespace mario
 			{
 				if (pSrc[c] < 0)
 				{
-					cerr << "Error in sqrt(): data < 0.\n";
-					return Matrix();
+					throw "Error in sqrt(): data < 0.";
 				}
 
 				pDst[c] = std::sqrt(pSrc[c]);
@@ -587,8 +573,7 @@ namespace mario
 	{
 		if (NULL == m_data)
 		{
-			cerr << "Error in sqrt(): data is NULL.\n";
-			return Matrix();
+			throw "Error in sqrt(): data is NULL.";
 		}
 
 		Matrix result(m_row, m_col);
@@ -611,8 +596,7 @@ namespace mario
 	{
 		if (NULL == m_data)
 		{
-			cerr << "Error in sqrt(): data is NULL.\n";
-			return Matrix();
+			throw "Error in sqrt(): data is NULL.";
 		}
 
 		Matrix result(m_row, m_col);
@@ -635,8 +619,7 @@ namespace mario
 	{
 		if (NULL == m_data)
 		{
-			cerr << "Error in sqrt(): data is NULL.\n";
-			return Matrix();
+			throw "Error in sqrt(): data is NULL.";
 		}
 
 		Matrix result(m_row, m_col);
@@ -659,8 +642,7 @@ namespace mario
 	{
 		if (NULL == m_data)
 		{
-			cerr << "Error in sqrt(): data is NULL.\n";
-			return Matrix();
+			throw "Error in sqrt(): data is NULL.";
 		}
 
 		Matrix result(m_row, m_col);
@@ -731,8 +713,7 @@ namespace mario
 	{
 		if (_m1.m_col != _m2.m_col)
 		{
-			cerr << "Error in operator(m1, m2)+: size of two matrix is not equal.\n";
-			return Matrix();
+			throw "Error in operator(m1, m2)+: size of two matrix is not equal.";
 		}
 
 		Matrix result(_m1.m_row, _m2.m_col);
@@ -769,8 +750,7 @@ namespace mario
 	{
 		if (_m1.m_row != _m2.m_row || _m1.m_col != _m2.m_col)
 		{
-			cerr << "Error in operator(m1, m2)+: size of two matrix is not equal.\n";
-			return _m1;
+			throw "Error in operator(m1, m2)+: size of two matrix is not equal.";
 		}
 
 		double *pDst = _m1.m_data;
@@ -851,8 +831,7 @@ namespace mario
 	{
 		if (_m1.m_col != _m2.m_row)
 		{
-			cerr << "Error in operator*(m1, m2): _m1.m_col != _m2.m_row.\n";
-			return Matrix();
+			throw "Error in operator*(m1, m2): _m1.m_col != _m2.m_row.";
 		}
 
 		Matrix result(_m1.m_row, _m2.m_col, 0);
@@ -879,8 +858,7 @@ namespace mario
 	{
 		if (NULL == _m.m_data)
 		{
-			cerr << "Error in operator*(m, e): NULL == _m.m_data.\n";
-			return Matrix();
+			throw "Error in operator*(m, e): NULL == _m.m_data.";
 		}
 
 		Matrix result(_m.m_row, _m.m_col);
@@ -906,8 +884,7 @@ namespace mario
 	{
 		if (NULL == _m.m_data)
 		{
-			cerr << "Error in operator*=(m, e): NULL == _m.m_data.\n";
-			return Matrix();
+			throw "Error in operator*=(m, e): NULL == _m.m_data.";
 		}
 
 		double *pM = _m.m_data;
@@ -924,8 +901,7 @@ namespace mario
 	{
 		if (isEqual(_e, 0))
 		{
-			cerr << "Error in operator/(m, e): e==0.\n";
-			return Matrix();
+			throw "Error in operator/(m, e): e==0.";
 		}
 
 		return _m*(1 / _e);
@@ -936,8 +912,7 @@ namespace mario
 	{
 		if (_m1.m_row != _m2.m_row || _m1.m_col != _m2.m_col)
 		{
-			cerr << "Error in operator/(m1, m2): _m1.m_row != _m2.m_row || _m1.m_col != _m2.m_col.\n";
-			return Matrix();
+			throw "Error in operator/(m1, m2): _m1.m_row != _m2.m_row || _m1.m_col != _m2.m_col.";
 		}
 
 		Matrix result(_m1.m_row, _m1.m_col);
@@ -949,8 +924,7 @@ namespace mario
 		{
 			if (isEqual(pM2[i], 0))
 			{
-				cerr << "Error in operator/(m1, m2): element==0.\n";
-				return Matrix();
+				throw "Error in operator/(m1, m2): element==0.";
 			}
 
 			pR[i] = pM1[i] / pM2[i];
@@ -964,8 +938,7 @@ namespace mario
 	{
 		if (isEqual(_e, 0))
 		{
-			cerr << "Error in operator/=(m, e): e==0.\n";
-			return Matrix();
+			throw "Error in operator/=(m, e): e==0.";
 		}
 
 		double *pM = _m.m_data;
@@ -988,8 +961,7 @@ namespace mario
 		{
 			if (isEqual(pM[i], 0))
 			{
-				cerr << "Error in operator/(e, m): m.e==0.\n";
-				return Matrix();
+				throw "Error in operator/(e, m): m.e==0.";
 			}
 
 			pR[i] = _e / pM[i];
@@ -1003,13 +975,11 @@ namespace mario
 	{
 		if (_row <= 0 || _col <= 0)
 		{
-			cerr << "Error in matrixRand(): _row <= 0 || _col <= 0.\n";
-			return Matrix();
+			throw "Error in matrixRand(): _row <= 0 || _col <= 0.";
 		}
 		if (_start >= _end)
 		{
-			cerr << "Error in matrixRand(): _start >= _end.\n";
-			return Matrix();
+			throw "Error in matrixRand(): _start >= _end.";
 		}
 		
 		Matrix result(_row, _col);
@@ -1029,13 +999,11 @@ namespace mario
 	{
 		if (_rowNum <= 0)
 		{
-			cerr << "Error in copyRow(m, row): _rowNum <= 0.\n";
-			return Matrix();
+			throw "Error in copyRow(m, row): _rowNum <= 0.";
 		}
 		if (1 != _m.rows())
 		{
-			cerr << "Error in copyRow(m, row): 1 != _m.rows().\n";
-			return Matrix();
+			throw "Error in copyRow(m, row): 1 != _m.rows().";
 		}
 
 		Matrix result(_rowNum, _m.cols());
