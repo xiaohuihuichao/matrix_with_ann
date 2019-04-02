@@ -1,4 +1,6 @@
 # matrix_with_ann
+<a href="https://996.icu"><img src="https://img.shields.io/badge/link-996.icu-red.svg" alt="996.icu"></a>
+
 This C++ code include a matrix library and a multi-layer perceptron(full connection network) with computer graph.
 
 # Compile:
